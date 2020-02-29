@@ -88,7 +88,45 @@ db.createRole = (role) => {
       return resolve(result);
     });
   });
-}
+};
+
+db.removeRole = (roleId) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`DELETE FROM role WHERE id = ?`, [ roleId ], (err, result) => {
+      if(err) return reject(err);
+      return resolve(result);
+    });
+  });
+};
+
+db.createDepartment = (department) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`INSERT INTO department (name) VALUES (?)`, [ department ], (err, result) => {
+      if(err) return reject(err);
+      return resolve(result);
+    });
+  });
+};
+
+db.removeDepartment = (departmentId) => {
+  return new Promise((resovle, reject) => {
+    connection.query(`DELETE FROM department WHERE id = ?`, [ departmentId ], (err, result) => {
+      if(err) return reject(err);
+      return resolve(result);
+    });
+  });
+};
+
+db.createEmployee = (employee) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`, [employee.first_name,employee.last_name, employee.role_id, employee.manager_id], (err, result) => {
+      if(err) return reject(err);
+      return resolve(result);
+    });
+  });
+};
+
+
 
 
 module.exports = db;
