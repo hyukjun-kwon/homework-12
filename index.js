@@ -130,7 +130,7 @@ async function budgets() {
     for(department of departments) {
       budgets.push({ 
         name: department.name, 
-        salary: await db.budgetByDepartment(department.id) 
+        budget: await db.budgetByDepartment(department.id) 
       });
     }
     
