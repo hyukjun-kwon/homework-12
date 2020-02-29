@@ -75,6 +75,10 @@ async function loadMainPrompts() {
             value: "REMOVE_DEPARTMENT"
           },
           {
+            name: "View Budgets",
+            value: "BUDGETS"
+          },
+          {
             name: "Quit",
             value: "QUIT"
           }
@@ -85,7 +89,7 @@ async function loadMainPrompts() {
     // Call the appropriate function depending on what the user chose
     switch (choice) {
       case "VIEW_EMPLOYEES":
-        return viewEmployees();
+        return displayAllEmployees();
       case "VIEW_EMPLOYEES_BY_DEPARTMENT":
         return viewEmployeesByDepartment();
       case "VIEW_EMPLOYEES_BY_MANAGER":
@@ -110,6 +114,8 @@ async function loadMainPrompts() {
         return addRole();
       case "REMOVE_ROLE":
         return removeRole();
+      case "BUDGETS":
+        return budgets();
       default:
         return quit();
     }
@@ -117,13 +123,44 @@ async function loadMainPrompts() {
     if (err) throw err;
   }
 }
+async function budgets() {
+  try {
+    const departments = await db.findAllDepartments();
+    const budgets = [];
+    for(department of departments) {
+      budgets.push({ 
+        name: department.name, 
+        salary: await db.budgetByDepartment(department.id) 
+      });
+    }
+    
+    console.log("\n");
+    console.table(budgets);
+
+    loadMainPrompts();
+  }
+  catch(err) {
+    if(err) throw err;
+  }
+}
+
+async function displayAllEmployees() {
+  try {
+    const employees = await db.allEmployeesInfo();
+
+    console.log("\n");
+    console.table(employees);
+
+    loadMainPrompts();
+  }
+  catch(err) {
+    if(err) throw err;
+  }
+}
 
 async function viewEmployees() {
   try {
     const employees = await db.findAllEmployees();
-
-    console.log("\n");
-    console.table(employees);
 
     loadMainPrompts();
   } catch (err) {
