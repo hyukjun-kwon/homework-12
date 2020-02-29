@@ -156,7 +156,7 @@ async function viewEmployeesByManager() {
     value: id
   }));
 
-  const { managerId } = await prompt([
+  const { managerId }  = await prompt([
     {
       type: "list",
       name: "managerId",
