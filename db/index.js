@@ -72,5 +72,23 @@ db.updateEmployeeRole = (employeeId, roleId) => {
   });
 };
 
+db.updateEmployeeManager = (employeeId, managerId) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`UPDATE employee SET manager_id = ? WHERE id = ?`, [ managerId, employeeId ], (err, result) => {
+      if(err) return reject(err);
+      return resolve(result);
+    });
+  });
+};
+
+db.createRole = (role) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [ role.title, role.salary, role.department_id ], (err, result) => {
+      if(err) return reject(err);
+      return resolve(result);
+    });
+  });
+}
+
 
 module.exports = db;
